@@ -17,7 +17,7 @@ namespace Command {
 namespace Boby {
 class DistanceBody: public IBody {
 public:
-	const BasicDTO::Distance& getDistance() {
+	const BasicDTO::Distance getDistance() {
 		return _Distance;
 	}
 
@@ -27,6 +27,14 @@ public:
 
 	void setDistance(const float& distance) {
 		_Distance.distance = distance;
+	}
+
+	uint8_t* Serialise(){
+		return (uint8_t*) &_Distance.distance;
+	}
+
+	void Unserialise(uint8_t* CommandeBytes){
+		_Distance = *(BasicDTO::pDistance) CommandeBytes;
 	}
 
 private:
@@ -39,8 +47,6 @@ public:
 	Distance();
 	virtual ~Distance(){};
 
-	const uint8_t* serialise();
-	void Unserialise();
 
 };
 

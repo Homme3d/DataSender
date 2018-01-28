@@ -27,6 +27,8 @@ enum CommandType {
 class IBody {
 public:
 	virtual ~IBody() {}
+	virtual uint8_t* Serialise()=0;
+	virtual void Unserialise(uint8_t* CommandeBytes)=0;
 
 };
 
@@ -37,8 +39,15 @@ public:
 	virtual ~ICommand() {
 	}
 
-	virtual const uint8_t* serialise()=0;
-	virtual void Unserialise()=0;
+	const uint8_t* Serialise(){
+		std::cout << "obj serialized" << std::endl;
+		CommandeBytes = _Body.Serialise();
+		return CommandeBytes;
+	}
+	void Unserialise(){
+		std::cout << "obj Unserialised" << std::endl;
+		_Body.Unserialise(CommandeBytes);
+	}
 
 	size_t size() {
 		return sizeof(_Header) + sizeof(_Body);
@@ -57,8 +66,8 @@ public:
 		return _Body;
 	}
 
-	void setBody(const T& boady) {
-		_Body = boady;
+	void setBody(const T& body) {
+		_Body = body;
 	}
 
 	const uint8_t* getCommandeBytes() {
@@ -86,9 +95,11 @@ protected:
 		_Header = header;
 	}
 
+	T _Body;
+
 private:
 	CommandType _Header;
-	T _Body;
+
 
 	uint8_t* CommandeBytes;
 };

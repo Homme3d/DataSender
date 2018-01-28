@@ -15,14 +15,22 @@ using namespace std;
 int main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	FWK::Command::Distance d;
+	FWK::Command::Boby::DistanceBody& a1 = d.accessBody();
+	a1.setDistance(10);
 
-	const uint8_t* tab = d.serialise();
+	FWK::Command::Boby::DistanceBody a2 = d.accessBody();
+	cout << a2.getDistance().distance<< endl;
+
+	const uint8_t* tab = d.Serialise();
 
 	cout << (int)tab<< endl;
 
+	FWK::Command::Boby::DistanceBody a = d.getBody();
 
-	if(d.isSerialised())
+	if(d.isSerialised()){
 		d.Unserialise();
+		cout << a.getDistance().distance<< endl;
+	}
 	else
 		cout << "obj not serialized" << endl;
 
